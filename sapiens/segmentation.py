@@ -1,11 +1,19 @@
 import time
+from enum import Enum
 
 import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
 
-from .common import create_preprocessor
+from .common import create_preprocessor, TaskType, download_hf_model
+
+
+class SapiensSegmentationType(Enum):
+    OFF = "off"
+    SEGMENTATION_03B = "sapiens_0.3b_goliath_best_goliath_mIoU_7673_epoch_194_torchscript.pt2"
+    SEGMENTATION_06B = "sapiens_0.6b_goliath_best_goliath_mIoU_7777_epoch_178_torchscript.pt2"
+    SEGMENTATION_1B = "sapiens_1b_goliath_best_goliath_mIoU_7994_epoch_151_torchscript.pt2"
 
 
 random = np.random.RandomState(11)
@@ -14,9 +22,10 @@ classes = ["Background", "Apparel", "Face Neck", "Hair", "Left Foot", "Left Hand
            "Right Lower Arm", "Right Lower Leg", "Right Shoe", "Right Sock", "Right Upper Arm", "Right Upper Leg",
            "Torso", "Upper Clothing", "Lower Lip", "Upper Lip", "Lower Teeth", "Upper Teeth", "Tongue"]
 
-colors = random.randint(0, 255, (len(classes)-1, 3))
+colors = random.randint(0, 255, (len(classes) - 1, 3))
 colors = np.vstack((np.array([128, 128, 128]), colors)).astype(np.uint8)  # Add background color
 colors = colors[:, ::-1]
+
 
 def draw_segmentation_map(segmentation_map: np.ndarray) -> np.ndarray:
     h, w = segmentation_map.shape
@@ -45,16 +54,16 @@ def postprocess_segmentation(results: torch.Tensor, img_shape: tuple[int, int]) 
 
 class SapiensSegmentation():
     def __init__(self,
-                 path: str,
+                 type: SapiensSegmentationType = SapiensSegmentationType.SEGMENTATION_1B,
                  device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
                  dtype: torch.dtype = torch.float32):
-
+        path = download_hf_model(type.value, TaskType.SEG)
         model = torch.jit.load(path)
         model = model.eval()
         self.model = model.to(device).to(dtype)
         self.device = device
         self.dtype = dtype
-        self.preprocessor = create_preprocessor(input_size=(1024, 768)) # Only these values seem to work well
+        self.preprocessor = create_preprocessor(input_size=(1024, 768))  # Only these values seem to work well
 
     def __call__(self, img: np.ndarray) -> np.ndarray:
         start = time.perf_counter()
@@ -78,8 +87,8 @@ if __name__ == "__main__":
     img_path = "test.jpg"
     img = cv2.imread(img_path)
 
-    model_path = "../models/sapiens_1b_goliath_best_goliath_mIoU_7994_epoch_151_torchscript.pt2"
-    estimator = SapiensSegmentation(model_path, device=device, dtype=type)
+    model_type = SapiensSegmentationType.SEGMENTATION_1B
+    estimator = SapiensSegmentation(model_type)
 
     start = time.perf_counter()
     segmentations = estimator(img)

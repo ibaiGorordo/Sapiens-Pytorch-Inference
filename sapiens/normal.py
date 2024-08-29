@@ -1,11 +1,19 @@
+from enum import Enum
 import time
-
 import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
 
-from .common import create_preprocessor
+from common import create_preprocessor, TaskType, download_hf_model
+
+
+class SapiensNormalType(Enum):
+    OFF = "off"
+    NORMAL_03B = "sapiens_0.3b_normal_render_people_epoch_66_torchscript.pt2"
+    NORMAL_06B = "sapiens_0.6b_normal_render_people_epoch_200_torchscript.pt2"
+    NORMAL_1B = "sapiens_1b_normal_render_people_epoch_115_torchscript.pt2"
+    NORMAL_2B = "sapiens_2b_normal_render_people_epoch_70_torchscript.pt2"
 
 
 def draw_normal_map(normal_map: np.ndarray) -> np.ndarray:
@@ -32,16 +40,16 @@ def postprocess_normal(results: torch.Tensor, img_shape: tuple[int, int]) -> np.
 
 class SapiensNormal():
     def __init__(self,
-                 path: str,
+                 type: SapiensNormalType = SapiensNormalType.NORMAL_03B,
                  device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
                  dtype: torch.dtype = torch.float32):
-
+        path = download_hf_model(type.value, TaskType.NORMAL)
         model = torch.jit.load(path)
         model = model.eval()
         self.model = model.to(device).to(dtype)
         self.device = device
         self.dtype = dtype
-        self.preprocessor = create_preprocessor(input_size=(1024, 768)) # Only these values seem to work well
+        self.preprocessor = create_preprocessor(input_size=(1024, 768))  # Only these values seem to work well
 
     def __call__(self, img: np.ndarray) -> np.ndarray:
         start = time.perf_counter()
@@ -51,11 +59,7 @@ class SapiensNormal():
         tensor = self.preprocessor(input).to(self.device).to(self.dtype)
 
         with torch.inference_mode():
-
             results = self.model(tensor)
-
-
-
 
         normals = postprocess_normal(results, img.shape[:2])
         print(f"fps: {1 / (time.perf_counter() - start)}")
@@ -63,14 +67,12 @@ class SapiensNormal():
 
 
 if __name__ == "__main__":
-    type = torch.float32
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    img_path = "test3.jpg"
+    img_path = "../ComfyUI_00074_.png"
     img = cv2.imread(img_path)
 
-    model_path = "../models/sapiens_0.3b_normal_render_people_epoch_66_torchscript.pt2"
-    estimator = SapiensNormal(model_path, device=device, dtype=type)
+    model_type = SapiensNormalType.NORMAL_03B
+    estimator = SapiensNormal(model_type)
 
     start = time.perf_counter()
     normals = estimator(img)
