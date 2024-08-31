@@ -1,13 +1,12 @@
 import torch
 import cv2
 
-from sapiens.normal import SapiensNormal, draw_normal_map
+from sapiens.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 
 cap = cv2.VideoCapture(0)
 
-model_path = "models/sapiens_1b_normal_render_people_epoch_115_torchscript.pt2"
 dtype = torch.float16
-estimator = SapiensNormal(model_path, dtype=dtype)
+estimator = SapiensNormal(SapiensNormalType.NORMAL_1B, dtype=dtype)
 
 while True:
     ret, frame = cap.read()
