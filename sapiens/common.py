@@ -21,6 +21,9 @@ def download_hf_model(model_name: str, task_type: TaskType, model_dir: str = 'mo
     if os.path.exists(path):
         return path
 
+    print(f"Model {model_name} not found, downloading from Hugging Face Hub..."
+          f"It will take a while, you will be notified when it's done.")
+
     model_version = "_".join(model_name.split("_")[:2])
     repo_id = "facebook/sapiens"
     subdirectory = f"sapiens_lite_host/torchscript/{task_type.value}/checkpoints/{model_version}"
@@ -29,6 +32,8 @@ def download_hf_model(model_name: str, task_type: TaskType, model_dir: str = 'mo
 
     os.rename(model_dir + "/" + subdirectory + "/" + model_name, path)
     shutil.rmtree(model_dir + "/" + subdirectory.split("/")[0])
+
+    print("Model downloaded successfully to", path)
 
     return path
 
