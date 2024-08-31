@@ -23,7 +23,7 @@ def draw_depth_map(depth_map: np.ndarray) -> np.ndarray:
     norm_depth_map = (norm_depth_map * 255).astype(np.uint8)
 
     # Normalize and color the image
-    color_depth = cv2.applyColorMap(norm_depth_map, cv2.COLORMAP_MAGMA)
+    color_depth = cv2.applyColorMap(norm_depth_map, cv2.COLORMAP_INFERNO)
     color_depth[depth_map == 0] = 128
     return color_depth
 
