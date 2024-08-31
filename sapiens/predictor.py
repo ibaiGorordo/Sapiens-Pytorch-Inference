@@ -80,13 +80,14 @@ class SapiensPredictor:
                 return img
 
             person_boxes = expand_boxes(person_boxes, img_shape)
+            print(f"{len(person_boxes)} people detected, predicting maps...")
         else:
             person_boxes = [[0, 0, img_shape[1], img_shape[0]]]
 
         normal_maps = []
         segmentation_maps = []
         depth_maps = []
-        print(f"{len(person_boxes)} people detected, predicting maps...")
+
         for box in person_boxes:
             crop = img[box[1]:box[3], box[0]:box[2]]
 
