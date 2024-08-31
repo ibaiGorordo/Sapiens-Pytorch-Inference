@@ -10,7 +10,6 @@ from .common import create_preprocessor, TaskType, download_hf_model
 
 
 class SapiensSegmentationType(Enum):
-    OFF = "off"
     SEGMENTATION_03B = "sapiens_0.3b_goliath_best_goliath_mIoU_7673_epoch_194_torchscript.pt2"
     SEGMENTATION_06B = "sapiens_0.6b_goliath_best_goliath_mIoU_7777_epoch_178_torchscript.pt2"
     SEGMENTATION_1B = "sapiens_1b_goliath_best_goliath_mIoU_7994_epoch_151_torchscript.pt2"
@@ -76,7 +75,7 @@ class SapiensSegmentation():
             results = self.model(tensor)
         segmentation_map = postprocess_segmentation(results, img.shape[:2])
 
-        print(f"fps: {1 / (time.perf_counter() - start):.1f}")
+        print(f"Segmentation inference took: {time.perf_counter() - start:.4f} seconds")
         return segmentation_map
 
 
