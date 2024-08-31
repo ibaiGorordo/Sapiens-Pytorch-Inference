@@ -63,7 +63,7 @@ class SapiensDepth():
             results = self.model(tensor)
 
         depth_map = postprocess_depth(results, img.shape[:2])
-        print(f"fps: {1 / (time.perf_counter() - start):.1f}")
+        print(f"Depth inference took: {time.perf_counter() - start:.4f} seconds")
         return depth_map
 
 

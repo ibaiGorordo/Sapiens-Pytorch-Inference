@@ -1,3 +1,4 @@
+import time
 from dataclasses import dataclass
 import numpy as np
 from ultralytics import YOLO
@@ -30,12 +31,15 @@ class Detector:
         return self.detect(img)
 
     def detect(self, img: np.ndarray) -> np.ndarray:
+        start = time.perf_counter()
         results = self.model(img, conf=self.conf_thres)
         detections = results[0].boxes.data.cpu().numpy()  # (x1, y1, x2, y2, conf, cls)
 
         # Filter out only person
         person_detections = detections[detections[:, -1] == self.person_id]
         boxes = person_detections[:, :-2].astype(int)
+
+        print(f"Detection inference took: {time.perf_counter() - start:.4f} seconds")
         return boxes
 
 

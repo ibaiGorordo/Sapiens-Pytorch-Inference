@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from common import create_preprocessor, TaskType, download_hf_model
+from .common import create_preprocessor, TaskType, download_hf_model
 
 
 class SapiensNormalType(Enum):
@@ -62,7 +62,7 @@ class SapiensNormal():
             results = self.model(tensor)
 
         normals = postprocess_normal(results, img.shape[:2])
-        print(f"fps: {1 / (time.perf_counter() - start)}")
+        print(f"Normal inference took: {time.perf_counter() - start:.4f} seconds")
         return normals
 
 
