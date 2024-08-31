@@ -14,17 +14,17 @@ from .detector import Detector, DetectorConfig
 class SapiensConfig:
     dtype: torch.dtype = torch.float32
     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    normal_type: SapiensNormalType = SapiensNormalType.NORMAL_03B
     segmentation_type: SapiensSegmentationType = SapiensSegmentationType.SEGMENTATION_1B
+    normal_type: SapiensNormalType = SapiensNormalType.OFF
     depth_type: SapiensDepthType = SapiensDepthType.OFF
     detector_config: DetectorConfig = DetectorConfig()
-    minimum_person_height: int = 0.1  # 10% of the image height
+    minimum_person_height: int = 0.5  # 50% of the image height
 
     def __str__(self):
         return f"SapiensConfig(dtype={self.dtype}\n" \
                f"device={self.device}\n" \
-               f"normal_type={self.normal_type}\n" \
                f"segmentation_type={self.segmentation_type}\n" \
+               f"normal_type={self.normal_type}\n" \
                f"depth_type={self.depth_type}\n" \
                f"detector_config={self.detector_config}\n" \
                f"minimum_person_height={self.minimum_person_height * 100}% of the image height"
@@ -41,6 +41,18 @@ def filter_small_boxes(boxes: np.ndarray, img_height: int, height_thres: float =
     return np.array(person_boxes)
 
 
+def expand_boxes(boxes: np.ndarray, img_shape: tuple[int, int], padding: int = 50) -> np.ndarray:
+    expanded_boxes = []
+    for box in boxes:
+        x1, y1, x2, y2 = box
+        x1 = max(0, x1 - padding)
+        y1 = max(0, y1 - padding)
+        x2 = min(img_shape[1], x2 + padding)
+        y2 = min(img_shape[0], y2 + padding)
+        expanded_boxes.append([x1, y1, x2, y2])
+    return np.array(expanded_boxes)
+
+
 class SapiensPredictor:
     def __init__(self, config: SapiensConfig):
         self.has_normal = config.normal_type != SapiensNormalType.OFF
@@ -51,7 +63,7 @@ class SapiensPredictor:
                                               config.dtype) if self.has_normal else None
         self.segmentation_predictor = SapiensSegmentation(config.segmentation_type, config.device, config.dtype)
         self.depth_predictor = SapiensDepth(config.depth_type, config.device, config.dtype) if self.has_depth else None
-        self.detector = Detector(config.detector_config)
+        self.detector = None  #Detector(config.detector_config) #TODO: Cropping seems to make the results worse
 
     def __call__(self, img: np.ndarray) -> np.ndarray:
         return self.predict(img)
@@ -59,14 +71,17 @@ class SapiensPredictor:
     def predict(self, img: np.ndarray) -> np.ndarray:
         img_shape = img.shape
 
-        print("Detecting people...")
-        person_boxes = self.detector.detect(img)
-        person_boxes = filter_small_boxes(person_boxes, img_shape[0], self.minimum_person_height)
+        if self.detector is not None:
+            print("Detecting people...")
+            person_boxes = self.detector.detect(img)
+            person_boxes = filter_small_boxes(person_boxes, img_shape[0], self.minimum_person_height)
 
-        if len(person_boxes) == 0:
-            return img
+            if len(person_boxes) == 0:
+                return img
 
-        person_boxes = np.array(person_boxes)
+            person_boxes = expand_boxes(person_boxes, img_shape)
+        else:
+            person_boxes = [[0, 0, img_shape[1], img_shape[0]]]
 
         normal_maps = []
         segmentation_maps = []
@@ -89,7 +104,7 @@ class SapiensPredictor:
         segmentation_img = img.copy()
         for segmentation_map, box in zip(segmentation_maps, person_boxes):
             mask = segmentation_map > 0
-            crop = img[box[1]:box[3], box[0]:box[2]]
+            crop = segmentation_img[box[1]:box[3], box[0]:box[2]]
             segmentation_draw = draw_segmentation_map(segmentation_map)
             crop_draw = cv2.addWeighted(crop, 0.5, segmentation_draw, 0.7, 0)
             segmentation_img[box[1]:box[3], box[0]:box[2]] = crop_draw * mask[..., None] + crop * ~mask[..., None]
@@ -99,7 +114,7 @@ class SapiensPredictor:
             normal_img = img.copy()
             for i, (normal_map, box) in enumerate(zip(normal_maps, person_boxes)):
                 mask = segmentation_maps[i] > 0
-                crop = img[box[1]:box[3], box[0]:box[2]]
+                crop = normal_img[box[1]:box[3], box[0]:box[2]]
                 normal_draw = draw_normal_map(normal_map)
                 crop_draw = cv2.addWeighted(crop, 0.5, normal_draw, 0.7, 0)
                 normal_img[box[1]:box[3], box[0]:box[2]] = crop_draw * mask[..., None] + crop * ~mask[..., None]
@@ -109,7 +124,7 @@ class SapiensPredictor:
             depth_img = img.copy()
             for i, (depth_map, box) in enumerate(zip(depth_maps, person_boxes)):
                 mask = segmentation_maps[i] > 0
-                crop = img[box[1]:box[3], box[0]:box[2]]
+                crop = depth_img[box[1]:box[3], box[0]:box[2]]
                 depth_map[~mask] = 0
                 depth_draw = draw_depth_map(depth_map)
                 crop_draw = cv2.addWeighted(crop, 0.5, depth_draw, 0.7, 0)
