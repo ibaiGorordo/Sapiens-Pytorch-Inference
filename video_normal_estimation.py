@@ -2,6 +2,7 @@ from datetime import timedelta
 import torch
 import cv2
 from cap_from_youtube import cap_from_youtube
+
 from sapiens.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 
 videoUrl = 'https://youtu.be/comTX7mxSzU?si=LL2ilfJ6tDXeFTkQ'

@@ -11,8 +11,7 @@ config.normal_type = SapiensNormalType.NORMAL_1B  # Disabled by default
 predictor = SapiensPredictor(config)
 
 # Load the image
-# img = imread_from_url("https://upload.wikimedia.org/wikipedia/commons/5/5b/Jogging_with_dog_at_Carcavelos_Beach.jpg")
-img = cv2.imread("ComfyUI_00074_.png")
+img = imread_from_url("https://github.com/ibaiGorordo/Sapiens-Pytorch-Inference/blob/assets/test2.png?raw=true")
 
 # Estimate the maps
 result = predictor(img)

@@ -7,8 +7,7 @@ from sapiens.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 dtype = torch.float16
 estimator = SapiensNormal(SapiensNormalType.NORMAL_1B, dtype=dtype)
 
-# img = imread_from_url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Han_Solo_in_Carbonite_%2831649435213%29.jpg/768px-Han_Solo_in_Carbonite_%2831649435213%29.jpg")
-img = cv2.imread("ComfyUI_00070_.png")
+img = imread_from_url("https://github.com/ibaiGorordo/Sapiens-Pytorch-Inference/blob/assets/test1.png?raw=true")
 
 normal_map = estimator(img)
 
