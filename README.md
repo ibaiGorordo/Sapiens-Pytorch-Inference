@@ -75,7 +75,7 @@ python image_predictor.py
 
 ![sapiens_human_model](https://github.com/user-attachments/assets/988c7551-061a-4b69-8b7c-4546cba336da)
 
-* **Video Sapiens Predictor (Normal, Depth, Segmentation)**:
+* **Video Sapiens Predictor (Normal, Depth, Segmentation)**: (https://youtu.be/hOyrnkQz1NE?si=jC76W7AY3zJnZhH4)
 ```
 python video_predictor.py
 ```
