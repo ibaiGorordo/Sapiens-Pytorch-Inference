@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sapiens-inferece"
-version = "0.1.0"
+version = "0.2.0"
 description = "Run Sapiens Human Foundation models in Pytorch"
 readme = "README.md"
 license = {text = "MIT"}
