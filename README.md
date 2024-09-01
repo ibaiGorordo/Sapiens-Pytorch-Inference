@@ -1,7 +1,7 @@
 # Sapiens-Pytorch-Inference
  Minimal code and examples for inferencing Sapiens foundation human models in Pytorch
 
-![!ONNX Sapiens_normal_segmentation](https://github.com/user-attachments/assets/a8f433f0-5f43-4797-89c6-5b33c58cbd01)
+![ONNX Sapiens_normal_segmentation](https://github.com/user-attachments/assets/a8f433f0-5f43-4797-89c6-5b33c58cbd01)
 
 # Why
 - Make it easy to run the models by creating a `SapiensPredictor` class that allows to run multiple tasks simultaneously
@@ -72,6 +72,8 @@ The `SapiensConfig` class allows to configure the model. It has the following at
 ```
 python image_predictor.py
 ```
+
+![sapiens_human_model](https://github.com/user-attachments/assets/988c7551-061a-4b69-8b7c-4546cba336da)
 
 * **Video Sapiens Predictor (Normal, Depth, Segmentation)**:
 ```
