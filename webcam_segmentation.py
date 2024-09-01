@@ -1,7 +1,7 @@
 import torch
 import cv2
 
-from sapiens.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
+from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
 
 cap = cv2.VideoCapture(0)
 

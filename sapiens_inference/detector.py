@@ -5,7 +5,7 @@ from ultralytics import YOLO
 
 @dataclass
 class DetectorConfig:
-    model_path: str = "../models/yolov8m.pt"
+    model_path: str = "models/yolov8m.pt"
     person_id: int = 0
     conf_thres: float = 0.25
 

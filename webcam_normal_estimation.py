@@ -1,7 +1,7 @@
 import torch
 import cv2
 
-from sapiens.normal import SapiensNormal, SapiensNormalType, draw_normal_map
+from sapiens_inference.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 
 cap = cv2.VideoCapture(0)
 

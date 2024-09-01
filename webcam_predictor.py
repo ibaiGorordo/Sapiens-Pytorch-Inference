@@ -1,7 +1,7 @@
 import torch
 import cv2
 
-from sapiens import SapiensPredictor, SapiensConfig, SapiensSegmentationType, SapiensNormalType, SapiensDepthType
+from sapiens_inference import SapiensPredictor, SapiensConfig, SapiensSegmentationType, SapiensNormalType, SapiensDepthType
 
 cap = cv2.VideoCapture(0)
 

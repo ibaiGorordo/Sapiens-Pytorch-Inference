@@ -2,7 +2,7 @@ import torch
 import cv2
 from imread_from_url import imread_from_url
 
-from sapiens.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
+from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
 
 dtype = torch.float16
 estimator = SapiensSegmentation(SapiensSegmentationType.SEGMENTATION_1B, dtype=dtype)

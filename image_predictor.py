@@ -2,7 +2,7 @@ import torch
 import cv2
 from imread_from_url import imread_from_url
 
-from sapiens import SapiensPredictor, SapiensConfig, SapiensDepthType, SapiensNormalType
+from sapiens_inference import SapiensPredictor, SapiensConfig, SapiensDepthType, SapiensNormalType
 
 config = SapiensConfig()
 config.dtype = torch.float16

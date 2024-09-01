@@ -3,7 +3,7 @@ import torch
 import cv2
 from cap_from_youtube import cap_from_youtube
 
-from sapiens.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
+from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
 
 videoUrl = 'https://youtube.com/shorts/DCpxd2ii_sM?si=oWbLTd1RveKThxYL'
 cap = cap_from_youtube(videoUrl, start=timedelta(minutes=0, seconds=0))

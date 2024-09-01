@@ -1,8 +1,8 @@
 import torch
 import argparse
 
-from sapiens.common import TaskType, download_hf_model
-from sapiens import SapiensSegmentationType, SapiensNormalType, SapiensDepthType
+from sapiens_inference.common import TaskType, download_hf_model
+from sapiens_inference import SapiensSegmentationType, SapiensNormalType, SapiensDepthType
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

@@ -4,7 +4,7 @@ import cv2
 from cap_from_youtube import cap_from_youtube
 from cv_videowriter import VideoWriter
 
-from sapiens import SapiensPredictor, SapiensConfig, SapiensNormalType, SapiensDepthType
+from sapiens_inference import SapiensPredictor, SapiensConfig, SapiensNormalType, SapiensDepthType
 
 config = SapiensConfig()
 config.dtype = torch.float16

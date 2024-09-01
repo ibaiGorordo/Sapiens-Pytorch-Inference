@@ -2,7 +2,7 @@ import torch
 import cv2
 from imread_from_url import imread_from_url
 
-from sapiens.normal import SapiensNormal, SapiensNormalType, draw_normal_map
+from sapiens_inference.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 
 dtype = torch.float16
 estimator = SapiensNormal(SapiensNormalType.NORMAL_1B, dtype=dtype)
