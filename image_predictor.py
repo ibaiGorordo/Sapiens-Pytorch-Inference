@@ -5,7 +5,7 @@ from imread_from_url import imread_from_url
 from sapiens_inference import SapiensPredictor, SapiensConfig, SapiensDepthType, SapiensNormalType
 
 config = SapiensConfig()
-config.dtype = torch.float16
+# config.dtype = torch.float16
 config.depth_type = SapiensDepthType.DEPTH_03B  # Disabled by default
 config.normal_type = SapiensNormalType.NORMAL_1B  # Disabled by default
 predictor = SapiensPredictor(config)

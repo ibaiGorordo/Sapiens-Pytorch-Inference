@@ -6,7 +6,7 @@ from cap_from_youtube import cap_from_youtube
 from sapiens_inference import SapiensPredictor, SapiensConfig, SapiensNormalType, SapiensDepthType
 
 config = SapiensConfig()
-config.dtype = torch.float16
+# config.dtype = torch.float16
 config.normal_type = SapiensNormalType.NORMAL_1B # Disabled by default
 # config.depth_type = SapiensDepthType.DEPTH_03B # Disabled by default
 predictor = SapiensPredictor(config)

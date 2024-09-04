@@ -5,7 +5,7 @@ from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentat
 
 cap = cv2.VideoCapture(0)
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensSegmentation(SapiensSegmentationType.SEGMENTATION_1B, dtype=dtype)
 
 while True:

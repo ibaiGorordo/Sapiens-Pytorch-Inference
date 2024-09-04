@@ -8,7 +8,7 @@ from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentat
 videoUrl = 'https://youtube.com/shorts/DCpxd2ii_sM?si=oWbLTd1RveKThxYL'
 cap = cap_from_youtube(videoUrl, start=timedelta(minutes=0, seconds=0))
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensSegmentation(SapiensSegmentationType.SEGMENTATION_1B, dtype=dtype)
 
 cv2.namedWindow("Segmentation Map", cv2.WINDOW_NORMAL)

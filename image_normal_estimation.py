@@ -4,7 +4,7 @@ from imread_from_url import imread_from_url
 
 from sapiens_inference.normal import SapiensNormal, SapiensNormalType, draw_normal_map
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensNormal(SapiensNormalType.NORMAL_1B, dtype=dtype)
 
 img = imread_from_url("https://github.com/ibaiGorordo/Sapiens-Pytorch-Inference/blob/assets/test1.png?raw=true")

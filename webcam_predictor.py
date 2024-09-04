@@ -8,7 +8,7 @@ cap = cv2.VideoCapture(0)
 config = SapiensConfig()
 # config.depth_type = SapiensDepthType.DEPTH_03B # Disabled by default
 # config.normal_type = SapiensNormalType.NORMAL_1B # Disabled by default
-config.dtype = torch.float16
+# config.dtype = torch.float16
 predictor = SapiensPredictor(config)
 
 while True:

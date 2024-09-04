@@ -4,7 +4,7 @@ from imread_from_url import imread_from_url
 
 from sapiens_inference.segmentation import SapiensSegmentation, SapiensSegmentationType, draw_segmentation_map
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensSegmentation(SapiensSegmentationType.SEGMENTATION_1B, dtype=dtype)
 
 img = imread_from_url("https://upload.wikimedia.org/wikipedia/commons/5/5b/Jogging_with_dog_at_Carcavelos_Beach.jpg")

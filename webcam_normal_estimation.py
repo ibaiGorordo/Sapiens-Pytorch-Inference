@@ -5,7 +5,7 @@ from sapiens_inference.normal import SapiensNormal, SapiensNormalType, draw_norm
 
 cap = cv2.VideoCapture(0)
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensNormal(SapiensNormalType.NORMAL_1B, dtype=dtype)
 
 while True:

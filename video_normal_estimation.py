@@ -8,7 +8,7 @@ from sapiens_inference.normal import SapiensNormal, SapiensNormalType, draw_norm
 videoUrl = 'https://youtu.be/comTX7mxSzU?si=LL2ilfJ6tDXeFTkQ'
 cap = cap_from_youtube(videoUrl, start=timedelta(minutes=2, seconds=54))
 
-dtype = torch.float16
+# dtype = torch.float16
 estimator = SapiensNormal(SapiensNormalType.NORMAL_03B, dtype=dtype)
 
 cv2.namedWindow("Normal Map", cv2.WINDOW_NORMAL)
