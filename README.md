@@ -18,7 +18,7 @@
 
 ## Installation [![PyPI](https://img.shields.io/pypi/v/sapiens-inferece?color=2BAF2B)](https://pypi.org/project/sapiens-inferece/)
 ```bash
-pip install sapiens_inference-inferece
+pip install sapiens-inferece
 ```
 Or, clone this repository:
 ```bash
