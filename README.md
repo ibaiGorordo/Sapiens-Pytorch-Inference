@@ -92,11 +92,19 @@ python image_normal_estimation.py
 ```
 
 * **Image Human Part Segmentation**:
+
 ```
 python image_segmentation.py
 ```
 
+**Image Pose Estimation**
+
+```
+python image_pose_estimation.py
+```
+
 * **Video Normal Estimation**:
+
 ```
 python video_normal_estimation.py
 ```
