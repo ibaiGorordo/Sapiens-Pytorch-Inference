@@ -97,7 +97,7 @@ python image_normal_estimation.py
 python image_segmentation.py
 ```
 
-**Image Pose Estimation**
+* **Image Pose Estimation**
 
 ```
 python image_pose_estimation.py
