@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import cv2
 import numpy as np
@@ -17,7 +17,7 @@ class SapiensConfig:
     segmentation_type: SapiensSegmentationType = SapiensSegmentationType.SEGMENTATION_1B
     normal_type: SapiensNormalType = SapiensNormalType.OFF
     depth_type: SapiensDepthType = SapiensDepthType.OFF
-    detector_config: DetectorConfig = DetectorConfig()
+    detector_config: DetectorConfig = field(default_factory=DetectorConfig)
     minimum_person_height: int = 0.5  # 50% of the image height
 
     def __str__(self):
