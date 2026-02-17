@@ -19,10 +19,14 @@ def draw_boxes(img, boxes, color=(0, 255, 0), thickness=2):
 
 
 class Detector:
-    def __init__(self, config: DetectorConfig = DetectorConfig()):
+    def __init__(self, config: DetectorConfig | None = None):
+        if config is None:
+            config = DetectorConfig()
+            
         model_path = config.model_path
         if not model_path.endswith(".pt"):
             model_path = model_path.split(".")[0] + ".pt"
+            
         self.model = YOLO(model_path)
         self.person_id = config.person_id
         self.conf_thres = config.conf_thres
