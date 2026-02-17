@@ -4,4 +4,3 @@ opencv-python
 cap_from_youtube
 imread_from_url
 ultralytics
-huggingface_hub
